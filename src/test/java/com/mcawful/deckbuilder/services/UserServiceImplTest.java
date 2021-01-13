@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -34,7 +35,7 @@ class UserServiceImplTest {
 	@MockBean
 	private UserRepo userRepo;
 
-	private User user;
+	private Optional<User> user;
 
 	/**
 	 * @throws java.lang.Exception
@@ -55,7 +56,7 @@ class UserServiceImplTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-		user = new User(1, "TestName", "test@mail.com", LocalDateTime.now(), true);
+		user = Optional.ofNullable(new User(1, "TestName", "test@mail.com", LocalDateTime.now(), true));
 	}
 
 	/**
@@ -68,36 +69,36 @@ class UserServiceImplTest {
 	/**
 	 * Tests the 'getUser' method of the {@link UserServiceImpl} when an ID for an
 	 * existing {@link User} is passed in. Test verifies that the {@link UserRepo}
-	 * 'getOne' method is called and asserts equal that the returned {@link User}
+	 * 'findById' method is called and asserts equal that the returned {@link User}
 	 * object matches what is expected.
 	 */
 	@Test
 	void getUserTest_UserExists() {
 
-		when(userRepo.getOne(user.getId())).thenReturn(user);
+		when(userRepo.findById(user.get().getId())).thenReturn(user);
 
-		User returnedUser = userService.getUser(user.getId());
+		User returnedUser = userService.getUser(user.get().getId());
 
-		verify(userRepo).getOne(user.getId());
+		verify(userRepo).findById(user.get().getId());
 
-		assertEquals(user, returnedUser, "UserServiceImpl.getUser(" + user.getId()
+		assertEquals(user.get(), returnedUser, "UserServiceImpl.getUser(" + user.get().getId()
 				+ ") did not return expected User object. Instead returned: " + returnedUser);
 	}
 
 	/**
 	 * Tests the 'getUser' method of the {@link UserServiceImpl} when an ID for a
 	 * non-existent {@link User} is passed in. Test verifies that the
-	 * {@link UserRepo} 'getOne' method is called and asserts equal that the
+	 * {@link UserRepo} 'findById' method is called and asserts equal that the
 	 * returned {@link User} object is null.
 	 */
 	@Test
 	void getUserTest_UserDoesNotExist() {
 
-		when(userRepo.getOne(0)).thenReturn(null);
+		when(userRepo.findById(0)).thenReturn(null);
 
 		User returnedUser = userService.getUser(0);
 
-		verify(userRepo).getOne(0);
+		verify(userRepo).findById(0);
 
 		assertEquals(null, returnedUser,
 				"UserServiceImpl.getUser(0) did not return a null User object. Instead returned: " + returnedUser);
