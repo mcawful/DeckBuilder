@@ -9,10 +9,12 @@ import org.springframework.stereotype.Repository;
 import com.mcawful.deckbuilder.models.User;
 
 /**
- * @author linkm
+ * Repository for the {@link User} object.
+ * 
+ * @author Michael McAuliffe
  *
  */
 @Repository
-public interface UserRepo extends JpaRepository<User, Integer>{
+public interface UserRepo extends JpaRepository<User, Integer> {
 
 }

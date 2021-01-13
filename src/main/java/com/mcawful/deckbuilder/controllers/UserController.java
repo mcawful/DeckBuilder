@@ -11,7 +11,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * @author linkm
+ * This controller contains the endpoints relating to the {@link User} object.
+ * This contains basic CRUD methods for GET, POST, PUT, and DELETE. There is
+ * also a GET method for all {@link User} objects.
+ * 
+ * @author Michael McAuliffe
  *
  */
 @RestController
@@ -22,9 +26,9 @@ public class UserController {
 		return null;
 	}
 
-	public Mono<User> createUser(User user) {
+	public boolean createUser(User user) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
 	}
 
 	public boolean updateUser(User user, int id) {

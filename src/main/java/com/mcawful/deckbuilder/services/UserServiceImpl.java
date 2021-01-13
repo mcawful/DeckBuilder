@@ -12,7 +12,10 @@ import com.mcawful.deckbuilder.models.User;
 import com.mcawful.deckbuilder.repos.UserRepo;
 
 /**
- * @author linkm
+ * Service that handles the logic for dealing with {@link User} objects. Makes
+ * calls to the {@link UserRepo} for basic CRUD operations.
+ * 
+ * @author Michael McAuliffe
  *
  */
 
