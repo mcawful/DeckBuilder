@@ -94,7 +94,7 @@ class UserServiceImplTest {
 	@Test
 	void getUserTest_UserDoesNotExist() {
 
-		when(userRepo.findById(0)).thenReturn(null);
+		when(userRepo.findById(0)).thenReturn(Optional.empty());
 
 		User returnedUser = userService.getUser(0);
 
