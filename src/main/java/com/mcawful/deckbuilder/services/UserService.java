@@ -5,6 +5,8 @@ package com.mcawful.deckbuilder.services;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import com.mcawful.deckbuilder.models.User;
 
 /**
@@ -21,25 +23,18 @@ public interface UserService {
 	 * 
 	 * @param id The ID of the {@link User} object.
 	 * @return The related {@link User} object.
+	 * @throws EntityNotFoundException
 	 */
-	public User getUser(int id);
+	public User getUser(int id) throws EntityNotFoundException;
 
 	/**
-	 * Method meant to handle a POST request for a {@link User} object.
+	 * Method meant to handle a POST or PUT request for a {@link User} object.
 	 * 
-	 * @param user The {@link User} object to be added.
-	 * @return The added {@link User} object.
+	 * @param user The {@link User} object to be added or updated.
+	 * @return The added or updated {@link User} object.
+	 * @throws IllegalArgumentException
 	 */
-	public User createUser(User user);
-
-	/**
-	 * Method for handling a PUT request for a {@link User} object.
-	 * 
-	 * @param user The {@link User} object to be updated.
-	 * @param id   The ID of the existing {@link User} object.
-	 * @return The updated {@link User} object.
-	 */
-	public User updateUser(User user, int id);
+	public User createOrUpdateUser(User user) throws IllegalArgumentException;
 
 	/**
 	 * Method for handling a DELETE request for a {@link User} object.
@@ -47,7 +42,7 @@ public interface UserService {
 	 * @param id The ID of the existing {@link User} object.
 	 * @return The deleted {@link User} object.
 	 */
-	public User deleteUser(int id);
+	public void deleteUser(int id);
 
 	/**
 	 * Method for handling a GET request for all {@link User} objects.

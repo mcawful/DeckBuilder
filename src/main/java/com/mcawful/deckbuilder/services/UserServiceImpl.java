@@ -5,6 +5,8 @@ package com.mcawful.deckbuilder.services;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,27 +33,20 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUser(int id) {
+	public User getUser(int id) throws EntityNotFoundException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public User createUser(User user) {
+	public User createOrUpdateUser(User user) throws IllegalArgumentException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public User updateUser(User user, int id) {
+	public void deleteUser(int id) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public User deleteUser(int id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -59,5 +54,4 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

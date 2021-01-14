@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mcawful.deckbuilder.services;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,6 +5,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterAll;
@@ -23,6 +23,8 @@ import com.mcawful.deckbuilder.models.User;
 import com.mcawful.deckbuilder.repos.UserRepo;
 
 /**
+ * Unit tests for the {@link UserServiceImpl} class methods.
+ * 
  * @author Michael McAuliffe
  *
  */
@@ -56,7 +58,7 @@ class UserServiceImplTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-		user = Optional.ofNullable(new User(1, "TestName", "test@mail.com", LocalDateTime.now(), true));
+		this.user = Optional.of(new User(1, "TestName", "test@mail.com", LocalDateTime.now(), true));
 	}
 
 	/**
@@ -64,43 +66,113 @@ class UserServiceImplTest {
 	 */
 	@AfterEach
 	void tearDown() throws Exception {
+		this.userRepo.deleteAll();
 	}
 
 	/**
-	 * Tests the 'getUser' method of the {@link UserServiceImpl} when an ID for an
-	 * existing {@link User} is passed in. Test verifies that the {@link UserRepo}
-	 * 'findById' method is called and asserts equal that the returned {@link User}
-	 * object matches what is expected.
+	 * Tests the 'getUser' method of the {@link UserServiceImpl} class when an ID
+	 * for an existing {@link User} is passed in. Test verifies that the
+	 * {@link UserRepo} 'findById' method is called and asserts equal that the
+	 * returned {@link User} object matches what is expected.
 	 */
 	@Test
 	void getUserTest_UserExists() {
 
-		when(userRepo.findById(user.get().getId())).thenReturn(user);
+		when(this.userRepo.findById(this.user.get().getId())).thenReturn(this.user);
 
-		User returnedUser = userService.getUser(user.get().getId());
+		User returnedUser = this.userService.getUser(this.user.get().getId());
 
-		verify(userRepo).findById(user.get().getId());
+		verify(this.userRepo).findById(this.user.get().getId());
 
-		assertEquals(user.get(), returnedUser, "UserServiceImpl.getUser(" + user.get().getId()
+		assertEquals(this.user.get(), returnedUser, "UserServiceImpl.getUser(" + this.user.get().getId()
 				+ ") did not return expected User object. Instead returned: " + returnedUser);
 	}
 
 	/**
-	 * Tests the 'getUser' method of the {@link UserServiceImpl} when an ID for a
-	 * non-existent {@link User} is passed in. Test verifies that the
-	 * {@link UserRepo} 'findById' method is called and asserts equal that the
-	 * returned {@link User} object is null.
+	 * Tests the 'getUser' method of the {@link UserServiceImpl} class when an ID
+	 * for a non-existent {@link User} is passed in. Test verifies that the
+	 * {@link UserRepo} 'findById' method is called and asserts that a
+	 * 'NoSuchElementException' exception was thrown.
 	 */
 	@Test
 	void getUserTest_UserDoesNotExist() {
 
-		when(userRepo.findById(0)).thenReturn(Optional.empty());
+		when(this.userRepo.findById(0)).thenReturn(Optional.empty());
 
-		User returnedUser = userService.getUser(0);
+		assertThrows(NoSuchElementException.class, () -> this.userService.getUser(0),
+				"UserServiceImpl.getUser(0) did not throw a 'NoSuchElementException' as expected.");
 
-		verify(userRepo).findById(0);
+		verify(this.userRepo).findById(0);
+	}
 
-		assertEquals(null, returnedUser,
-				"UserServiceImpl.getUser(0) did not return a null User object. Instead returned: " + returnedUser);
+	/**
+	 * Tests the 'createOrUpdateUser' method of the {@link UserServiceImpl} class
+	 * when a valid {@link User} object is passed in. Test verifies that the
+	 * {@link UserRepo} 'save' method is called and asserts equal that the returned
+	 * {@link User} object matches what is expected.
+	 */
+	@Test
+	void createOrUpdateUserTest_SuccessfulAddOrUpdateUser() {
+
+		when(this.userRepo.save(this.user.get())).thenReturn(this.user.get());
+
+		User returnedUser = this.userService.createOrUpdateUser(this.user.get());
+
+		verify(this.userRepo).save(this.user.get());
+
+		assertEquals(this.user.get(), returnedUser, "UserServiceImpl.createOrUpdateUser(" + this.user.get().getId()
+				+ ") did not return expected User object. Instead returned: " + returnedUser);
+	}
+
+	/**
+	 * Tests the 'createOrUpdateUser' method of the {@link UserServiceImpl} class
+	 * when a null {@link User} object is passed in. Test verifies that the
+	 * {@link UserRepo} 'save' method is called and asserts that an
+	 * 'IllegalArgumentException' exception is thrown.
+	 */
+	@Test
+	void createOrUpdateUserTest_UserObjectIsNull() {
+
+		when(this.userRepo.save(null)).thenThrow(IllegalArgumentException.class);
+
+		assertThrows(IllegalArgumentException.class, () -> this.userService.createOrUpdateUser(null),
+				"UserServiceImpl.createUser(null) did not throw an 'IllegalArgumentException' as expected.");
+
+		verify(this.userRepo).save(null);
+	}
+
+	/**
+	 * Tests the 'deleteUser' method of the {@link UserServiceImpl} class when a
+	 * non-null {@link User} id is passed in. Verifies that the {@link UserRepo}
+	 * 'delete' method is called.
+	 */
+	@Test
+	void deleteUserTest_NonNullUserId() {
+
+		this.userService.deleteUser(user.get().getId());
+
+		verify(this.userRepo).deleteById(user.get().getId());
+	}
+
+	/**
+	 * Tests the 'getAllUsers' method of the {@link UserServiceImpl} class. Verifies
+	 * that the {@link UserRepo} 'findAll' method is called and that the returned
+	 * {@link List}<{@link User}> matches what is expected.
+	 */
+	@Test
+	void getAllUsersTest_Success() {
+
+		List<User> userList = new ArrayList<User>();
+		userList.add(user.get());
+
+		when(this.userRepo.findAll()).thenReturn(userList);
+
+		List<User> returnedUserList = this.userService.getAllUsers();
+
+		verify(this.userRepo).findAll();
+
+		assertEquals(userList, returnedUserList,
+				"UserServiceImpl.getAllUsers() did not return expected List of User objects. Expected: "
+						+ userList.toString() + " Instead returned: " + returnedUserList.toString());
 	}
 }
