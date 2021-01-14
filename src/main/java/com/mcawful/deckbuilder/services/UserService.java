@@ -4,6 +4,7 @@
 package com.mcawful.deckbuilder.services;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.persistence.EntityNotFoundException;
 
@@ -25,7 +26,7 @@ public interface UserService {
 	 * @return The related {@link User} object.
 	 * @throws EntityNotFoundException
 	 */
-	public User getUser(int id) throws EntityNotFoundException;
+	public User getUser(int id) throws NoSuchElementException;
 
 	/**
 	 * Method meant to handle a POST or PUT request for a {@link User} object.

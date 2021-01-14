@@ -4,8 +4,7 @@
 package com.mcawful.deckbuilder.services;
 
 import java.util.List;
-
-import javax.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,25 +32,26 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUser(int id) throws EntityNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+	public User getUser(int id) throws NoSuchElementException {
+
+		return this.userRepo.findById(id).get();
 	}
 
 	@Override
 	public User createOrUpdateUser(User user) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+
+		return this.userRepo.save(user);
 	}
 
 	@Override
 	public void deleteUser(int id) {
-		// TODO Auto-generated method stub
+
+		this.userRepo.deleteById(id);
 	}
 
 	@Override
 	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return this.userRepo.findAll();
 	}
 }
