@@ -7,6 +7,7 @@ package com.mcawful.deckbuilder.exceptions;
  * @author Michael McAuliffe
  *
  */
+@SuppressWarnings("serial")
 public class EmailNotUniqueException extends Exception {
 
 	/**
@@ -14,6 +15,5 @@ public class EmailNotUniqueException extends Exception {
 	 */
 	public EmailNotUniqueException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 }
