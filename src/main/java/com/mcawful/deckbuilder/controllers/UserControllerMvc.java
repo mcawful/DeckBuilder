@@ -45,8 +45,7 @@ public class UserControllerMvc {
 
 	@GetMapping("/{id}")
 	@ResponseBody
-	public UserDto getUser(@PathVariable int id)
-			throws NoSuchElementException, MalformattedEmailException, MalformattedUsernameException {
+	public UserDto getUser(@PathVariable int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
