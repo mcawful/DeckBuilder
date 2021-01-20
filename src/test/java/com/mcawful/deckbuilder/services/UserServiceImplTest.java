@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -62,7 +63,8 @@ class UserServiceImplTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-		this.user = Optional.of(new User(1, "TestName", "test@mail.com", LocalDateTime.now(), true));
+		this.user = Optional
+				.of(new User(1, "TestName", "test@mail.com", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), true));
 	}
 
 	/**
