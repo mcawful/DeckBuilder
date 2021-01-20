@@ -6,8 +6,6 @@ package com.mcawful.deckbuilder.services;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import javax.persistence.EntityNotFoundException;
-
 import com.mcawful.deckbuilder.models.User;
 
 /**
