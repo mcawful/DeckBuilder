@@ -3,6 +3,7 @@
  */
 package com.mcawful.deckbuilder.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -70,6 +71,16 @@ class UserServiceImplTest {
 	@AfterEach
 	void tearDown() throws Exception {
 		this.userRepo.deleteAll();
+	}
+
+	/**
+	 * Test asserts that the {@link UserServiceImpl} has been instantiated.
+	 * 
+	 * @throws Exception When {@link UserServiceImpl} is null
+	 */
+	@Test
+	void contextLoads() throws Exception {
+		assertThat(this.userService).isNotNull();
 	}
 
 	/**
