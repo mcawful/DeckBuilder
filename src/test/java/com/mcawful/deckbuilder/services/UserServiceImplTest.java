@@ -78,7 +78,7 @@ class UserServiceImplTest {
 	/**
 	 * Test asserts that the {@link UserServiceImpl} has been instantiated.
 	 * 
-	 * @throws Exception When {@link UserServiceImpl} is null
+	 * @throws Exception
 	 */
 	@Test
 	void contextLoads() throws Exception {
@@ -90,6 +90,8 @@ class UserServiceImplTest {
 	 * for an existing {@link User} is passed in. Test verifies that the
 	 * {@link UserRepo} 'findById' method is called and asserts equal that the
 	 * returned {@link User} object matches what is expected.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	void getUserTest_UserExists() throws Exception {
@@ -109,6 +111,8 @@ class UserServiceImplTest {
 	 * for a non-existent {@link User} is passed in. Test verifies that the
 	 * {@link UserRepo} 'findById' method is called and asserts that a
 	 * 'NoSuchElementException' exception was thrown.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	void getUserTest_UserDoesNotExist() throws Exception {
@@ -126,6 +130,8 @@ class UserServiceImplTest {
 	 * when a valid {@link User} object is passed in. Test verifies that the
 	 * {@link UserRepo} 'save' method is called and asserts equal that the returned
 	 * {@link User} object matches what is expected.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	void createOrUpdateUserTest_SuccessfulAddOrUpdateUser() throws Exception {
@@ -145,6 +151,8 @@ class UserServiceImplTest {
 	 * when a null {@link User} object is passed in. Test verifies that the
 	 * {@link UserRepo} 'save' method is called and asserts that an
 	 * 'IllegalArgumentException' exception is thrown.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	void createOrUpdateUserTest_UserObjectIsNull() throws Exception {
@@ -161,6 +169,8 @@ class UserServiceImplTest {
 	 * Tests the 'deleteUser' method of the {@link UserServiceImpl} class when a
 	 * non-null {@link User} id is passed in. Verifies that the {@link UserRepo}
 	 * 'delete' method is called.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	void deleteUserTest_NonNullUserId() throws Exception {
@@ -174,6 +184,8 @@ class UserServiceImplTest {
 	 * Tests the 'getAllUsers' method of the {@link UserServiceImpl} class. Verifies
 	 * that the {@link UserRepo} 'findAll' method is called and that the returned
 	 * {@link List}<{@link User}> matches what is expected.
+	 * 
+	 * @throws Exception
 	 */
 	@Test
 	void getAllUsersTest_Success() throws Exception {
