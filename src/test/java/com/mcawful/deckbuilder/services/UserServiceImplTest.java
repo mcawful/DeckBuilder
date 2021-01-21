@@ -92,7 +92,7 @@ class UserServiceImplTest {
 	 * returned {@link User} object matches what is expected.
 	 */
 	@Test
-	void getUserTest_UserExists() {
+	void getUserTest_UserExists() throws Exception {
 
 		when(this.userRepo.findById(this.user.get().getId())).thenReturn(this.user);
 
@@ -111,7 +111,7 @@ class UserServiceImplTest {
 	 * 'NoSuchElementException' exception was thrown.
 	 */
 	@Test
-	void getUserTest_UserDoesNotExist() {
+	void getUserTest_UserDoesNotExist() throws Exception {
 
 		when(this.userRepo.findById(0)).thenReturn(Optional.empty());
 
@@ -128,7 +128,7 @@ class UserServiceImplTest {
 	 * {@link User} object matches what is expected.
 	 */
 	@Test
-	void createOrUpdateUserTest_SuccessfulAddOrUpdateUser() {
+	void createOrUpdateUserTest_SuccessfulAddOrUpdateUser() throws Exception {
 
 		when(this.userRepo.save(this.user.get())).thenReturn(this.user.get());
 
@@ -147,7 +147,7 @@ class UserServiceImplTest {
 	 * 'IllegalArgumentException' exception is thrown.
 	 */
 	@Test
-	void createOrUpdateUserTest_UserObjectIsNull() {
+	void createOrUpdateUserTest_UserObjectIsNull() throws Exception {
 
 		when(this.userRepo.save(null)).thenThrow(IllegalArgumentException.class);
 
@@ -163,7 +163,7 @@ class UserServiceImplTest {
 	 * 'delete' method is called.
 	 */
 	@Test
-	void deleteUserTest_NonNullUserId() {
+	void deleteUserTest_NonNullUserId() throws Exception {
 
 		this.userService.deleteUser(user.get().getId());
 
@@ -176,7 +176,7 @@ class UserServiceImplTest {
 	 * {@link List}<{@link User}> matches what is expected.
 	 */
 	@Test
-	void getAllUsersTest_Success() {
+	void getAllUsersTest_Success() throws Exception {
 
 		List<User> userList = new ArrayList<User>();
 		userList.add(user.get());
