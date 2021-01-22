@@ -67,12 +67,12 @@ public class UserDto implements DtoConverter<User> {
 	 * 
 	 * @param user The {@link User} object
 	 */
-	public UserDto(User user) throws MalformattedEmailException, MalformattedUsernameException {
+	public UserDto(User user) {
 
-		this.setUsername(user.getUsername());
-		this.setEmail(user.getEmail());
-		this.setAccountCreationDate(user.getAccountCreationDate().toString());
-		this.setAccountActive(user.isAccountActive());
+		this.username = user.getUsername();
+		this.email = user.getEmail();
+		this.accountCreationDate = user.getAccountCreationDate().toString();
+		this.accountActive = user.isAccountActive();
 	}
 
 	/**
