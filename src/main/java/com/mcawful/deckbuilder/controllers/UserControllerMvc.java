@@ -4,9 +4,8 @@
 package com.mcawful.deckbuilder.controllers;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,11 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.mcawful.deckbuilder.dtos.UserDto;
-import com.mcawful.deckbuilder.exceptions.MalformattedEmailException;
-import com.mcawful.deckbuilder.exceptions.MalformattedUsernameException;
 import com.mcawful.deckbuilder.models.User;
 import com.mcawful.deckbuilder.services.UserService;
 
@@ -43,30 +40,32 @@ public class UserControllerMvc {
 	}
 
 	@GetMapping("/{id}")
+	@ResponseStatus(value = HttpStatus.OK)
 	public UserDto getUser(@PathVariable int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@PostMapping
-	public boolean createUser(@RequestBody UserDto userDto) {
+	@ResponseStatus(value = HttpStatus.CREATED)
+	public void createUser(@RequestBody UserDto userDto) {
 		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@PutMapping("/{id}")
-	public boolean updateUser(@PathVariable int id, @RequestBody UserDto userDto) {
+	@ResponseStatus(value = HttpStatus.OK)
+	public void updateUser(@PathVariable int id, @RequestBody UserDto userDto) {
 		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@DeleteMapping("/{id}")
-	public boolean deleteUser(@PathVariable int id) {
+	@ResponseStatus(value = HttpStatus.OK)
+	public void deleteUser(@PathVariable int id) {
 		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@GetMapping
+	@ResponseStatus(value = HttpStatus.OK)
 	public List<User> getAllUsers() {
 		// TODO Auto-generated method stub
 		return null;
