@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mcawful.deckbuilder.dtos.UserDto;
 import com.mcawful.deckbuilder.models.User;
 import com.mcawful.deckbuilder.services.UserService;
+import com.mcawful.deckbuilder.utils.DataValidator;
 
 /**
  * This controller contains the endpoints relating to the {@link User} object.
@@ -32,6 +33,8 @@ import com.mcawful.deckbuilder.services.UserService;
 public class UserControllerMvc {
 
 	UserService userService;
+
+	DataValidator dataValidator = new DataValidator();
 
 	@Autowired
 	public UserControllerMvc(UserService userService) {
