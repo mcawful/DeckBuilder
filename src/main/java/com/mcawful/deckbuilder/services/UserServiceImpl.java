@@ -53,7 +53,11 @@ public class UserServiceImpl implements UserService {
 	 * 
 	 * @param user The {@link User} object to be added or updated
 	 * @return The added or updated {@link User} object
-	 * @throws IllegalArgumentException When passed a null {@link User} object
+	 * @throws IllegalArgumentException        When passed a null {@link User}
+	 *                                         object
+	 * @throws DataIntegrityViolationException When passed a {@link User} object
+	 *                                         with a field or fields that violates
+	 *                                         database constraints
 	 */
 	@Override
 	public User createOrUpdateUser(User user) throws IllegalArgumentException, DataIntegrityViolationException {

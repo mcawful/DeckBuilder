@@ -6,6 +6,8 @@ package com.mcawful.deckbuilder.services;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 import com.mcawful.deckbuilder.models.User;
 
 /**
@@ -32,9 +34,13 @@ public interface UserService {
 	 * 
 	 * @param user The {@link User} object to be added or updated
 	 * @return The added or updated {@link User} object
-	 * @throws IllegalArgumentException When passed a null {@link User} object
+	 * @throws IllegalArgumentException        When passed a null {@link User}
+	 *                                         object
+	 * @throws DataIntegrityViolationException When passed a {@link User} object
+	 *                                         with a field or fields that violates
+	 *                                         database constraints
 	 */
-	public User createOrUpdateUser(User user) throws IllegalArgumentException;
+	public User createOrUpdateUser(User user) throws IllegalArgumentException, DataIntegrityViolationException;
 
 	/**
 	 * Method for handling a DELETE request for a {@link User} object.
