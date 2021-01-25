@@ -33,6 +33,7 @@ public class User {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column
 	private int id;
 
 	/**
@@ -51,11 +52,13 @@ public class User {
 	 * {@link LocalDateTime} The date the {@link User} object was created.
 	 */
 	@CreatedDate
+	@Column
 	private LocalDateTime accountCreationDate;
 
 	/**
 	 * Boolean that denotes whether the {@link User} object is currently active or
 	 * not.
 	 */
+	@Column
 	private boolean accountActive;
 }
