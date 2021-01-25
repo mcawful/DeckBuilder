@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.mcawful.deckbuilder.models.User;
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
 	 * @throws IllegalArgumentException When passed a null {@link User} object
 	 */
 	@Override
-	public User createOrUpdateUser(User user) throws IllegalArgumentException {
+	public User createOrUpdateUser(User user) throws IllegalArgumentException, DataIntegrityViolationException {
 
 		return this.userRepo.save(user);
 	}

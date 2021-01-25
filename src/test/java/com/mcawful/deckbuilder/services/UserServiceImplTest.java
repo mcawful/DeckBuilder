@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.mcawful.deckbuilder.models.User;
 import com.mcawful.deckbuilder.repos.UserRepo;
@@ -42,7 +43,9 @@ class UserServiceImplTest {
 	@MockBean
 	private UserRepo userRepo;
 
-	private Optional<User> user;
+	private Optional<User> optionalUser;
+
+	private User user;
 
 	/**
 	 * @throws java.lang.Exception
@@ -63,8 +66,9 @@ class UserServiceImplTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-		this.user = Optional
+		this.optionalUser = Optional
 				.of(new User(1, "TestName", "test@mail.com", LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS), true));
+		this.user = optionalUser.get();
 	}
 
 	/**
@@ -96,13 +100,13 @@ class UserServiceImplTest {
 	@Test
 	void getUserTest_UserExists() throws Exception {
 
-		when(this.userRepo.findById(this.user.get().getId())).thenReturn(this.user);
+		when(this.userRepo.findById(this.user.getId())).thenReturn(this.optionalUser);
 
-		User returnedUser = this.userService.getUser(this.user.get().getId());
+		User returnedUser = this.userService.getUser(this.optionalUser.get().getId());
 
-		verify(this.userRepo).findById(this.user.get().getId());
+		verify(this.userRepo).findById(this.user.getId());
 
-		assertEquals(this.user.get(), returnedUser, "UserServiceImpl.getUser(" + this.user.get().getId()
+		assertEquals(this.user, returnedUser, "UserServiceImpl.getUser(" + this.user.getId()
 				+ ") did not return expected User object. Instead returned: " + returnedUser);
 	}
 
@@ -136,13 +140,13 @@ class UserServiceImplTest {
 	@Test
 	void createOrUpdateUserTest_SuccessfulAddOrUpdateUser() throws Exception {
 
-		when(this.userRepo.save(this.user.get())).thenReturn(this.user.get());
+		when(this.userRepo.save(this.user)).thenReturn(this.user);
 
-		User returnedUser = this.userService.createOrUpdateUser(this.user.get());
+		User returnedUser = this.userService.createOrUpdateUser(this.user);
 
-		verify(this.userRepo).save(this.user.get());
+		verify(this.userRepo).save(this.user);
 
-		assertEquals(this.user.get(), returnedUser, "UserServiceImpl.createOrUpdateUser(" + this.user.get().getId()
+		assertEquals(this.user, returnedUser, "UserServiceImpl.createOrUpdateUser(" + this.user.getId()
 				+ ") did not return expected User object. Instead returned: " + returnedUser);
 	}
 
@@ -166,6 +170,25 @@ class UserServiceImplTest {
 	}
 
 	/**
+	 * Tests the 'createOrUpdateUser' method of the {@link UserServiceImpl} class
+	 * when a {@link User} object contains fields that violates constraints in the
+	 * database. Test verifies that the {@link UserRepo} 'save' method is called and
+	 * asserts that an 'DataIntegrityViolationException' exception is thrown.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void createOrUpdateUserTest_ConstrainstViolation() throws Exception {
+		when(this.userRepo.save(this.user)).thenThrow(DataIntegrityViolationException.class);
+
+		assertThrows(DataIntegrityViolationException.class, () -> this.userService.createOrUpdateUser(this.user),
+				"UserServiceImpl.createUser(" + this.user
+						+ ") did not throw an 'DataIntegrityViolationException' as expected.");
+
+		verify(this.userRepo).save(this.user);
+	}
+
+	/**
 	 * Tests the 'deleteUser' method of the {@link UserServiceImpl} class when a
 	 * non-null {@link User} id is passed in. Verifies that the {@link UserRepo}
 	 * 'delete' method is called.
@@ -175,9 +198,9 @@ class UserServiceImplTest {
 	@Test
 	void deleteUserTest_NonNullUserId() throws Exception {
 
-		this.userService.deleteUser(user.get().getId());
+		this.userService.deleteUser(user.getId());
 
-		verify(this.userRepo).deleteById(user.get().getId());
+		verify(this.userRepo).deleteById(user.getId());
 	}
 
 	/**
@@ -191,7 +214,7 @@ class UserServiceImplTest {
 	void getAllUsersTest_Success() throws Exception {
 
 		List<User> userList = new ArrayList<User>();
-		userList.add(user.get());
+		userList.add(user);
 
 		when(this.userRepo.findAll()).thenReturn(userList);
 
