@@ -131,6 +131,6 @@ public class UserControllerMvc {
 			throw new MalformattedUsernameException("Username is invalidly formatted.");
 
 		if (!dataValidator.isEmailValid(userDto.getEmail()))
-			throw new MalformattedEmailException("Username is invalidly formatted.");
+			throw new MalformattedEmailException("Email is invalidly formatted.");
 	}
 }
