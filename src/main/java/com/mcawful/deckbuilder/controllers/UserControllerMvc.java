@@ -44,9 +44,10 @@ public class UserControllerMvc {
 	}
 
 	/**
+	 * GET method for retrieving a {@link UserDto} object.
 	 * 
-	 * @param id
-	 * @return
+	 * @param id The ID of the {@link UserDto} object
+	 * @return The {@link UserDto} that matches the given ID
 	 */
 	@GetMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -57,10 +58,15 @@ public class UserControllerMvc {
 	}
 
 	/**
+	 * POST method for creating a new {@link UserDto} object.
 	 * 
-	 * @param userDto
-	 * @throws MalformattedUsernameException
-	 * @throws MalformattedEmailException
+	 * @param userDto The {@link UserDto} to create
+	 * @throws MalformattedUsernameException When the {@link UserDto} object's
+	 *                                       {@link String} username field is
+	 *                                       improperly formatted
+	 * @throws MalformattedEmailException    When the {@link UserDto} object's
+	 *                                       {@link String} email field is
+	 *                                       improperly formatted
 	 */
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
@@ -72,11 +78,16 @@ public class UserControllerMvc {
 	}
 
 	/**
+	 * PUT method for updating an existing {@link UserDto} object.
 	 * 
-	 * @param id
-	 * @param userDto
-	 * @throws MalformattedUsernameException
-	 * @throws MalformattedEmailException
+	 * @param id      The ID of the existing {@link UserDto} object
+	 * @param userDto The updated {@link UserDto} object
+	 * @throws MalformattedUsernameException When the {@link UserDto} object's
+	 *                                       {@link String} username field is
+	 *                                       improperly formatted
+	 * @throws MalformattedEmailException    When the {@link UserDto} object's
+	 *                                       {@link String} email field is
+	 *                                       improperly formatted
 	 */
 	@PutMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -84,13 +95,14 @@ public class UserControllerMvc {
 			throws MalformattedUsernameException, MalformattedEmailException {
 
 		this.validateDto(userDto);
-		this.userService.getUser(id);
+		this.userService.getUser(id); // Checks that the element already exists
 		this.userService.createOrUpdateUser(userDto.dtoToPojo());
 	}
 
 	/**
+	 * DELETE method for removing a {@link UserDto} object.
 	 * 
-	 * @param id
+	 * @param id The ID of the {@link UserDto} to delete
 	 */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -100,8 +112,9 @@ public class UserControllerMvc {
 	}
 
 	/**
+	 * GET method for retrieving all {@link UserDto} objects.
 	 * 
-	 * @return
+	 * @return A {@link List} of all {@link UserDto} objects
 	 */
 	@GetMapping
 	@ResponseStatus(value = HttpStatus.OK)
@@ -118,10 +131,15 @@ public class UserControllerMvc {
 	}
 
 	/**
+	 * Method that takes a {@link UserDto} object and throws exceptions if either
+	 * the {@link String} username or {@link String} email field is not properly
+	 * formatted.
 	 * 
-	 * @param userDto
-	 * @throws MalformattedUsernameException
-	 * @throws MalformattedEmailException
+	 * @param userDto The given {@link UserDto} object to validate
+	 * @throws MalformattedUsernameException When the {@link String} username is
+	 *                                       improperly formatted
+	 * @throws MalformattedEmailException    When the {@link String} email is
+	 *                                       improperly formatted
 	 */
 	private void validateDto(UserDto userDto) throws MalformattedUsernameException, MalformattedEmailException {
 
