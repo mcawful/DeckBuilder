@@ -3,6 +3,7 @@
  */
 package com.mcawful.deckbuilder.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import com.mcawful.deckbuilder.dtos.UserDto;
+import com.mcawful.deckbuilder.exceptions.MalformattedEmailException;
+import com.mcawful.deckbuilder.exceptions.MalformattedUsernameException;
 import com.mcawful.deckbuilder.models.User;
 import com.mcawful.deckbuilder.services.UserService;
 import com.mcawful.deckbuilder.utils.DataValidator;
@@ -34,43 +37,100 @@ public class UserControllerMvc {
 
 	UserService userService;
 
-	DataValidator dataValidator = new DataValidator();
-
 	@Autowired
 	public UserControllerMvc(UserService userService) {
 		super();
 		this.userService = userService;
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public UserDto getUser(@PathVariable int id) {
-		// TODO Auto-generated method stub
-		return null;
+
+		User user = this.userService.getUser(id);
+		return new UserDto(user);
 	}
 
+	/**
+	 * 
+	 * @param userDto
+	 * @throws MalformattedUsernameException
+	 * @throws MalformattedEmailException
+	 */
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void createUser(@RequestBody UserDto userDto) {
-		// TODO Auto-generated method stub
+	public void createUser(@RequestBody UserDto userDto)
+			throws MalformattedUsernameException, MalformattedEmailException {
+
+		this.validateDto(userDto);
+		this.userService.createOrUpdateUser(userDto.dtoToPojo());
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @param userDto
+	 * @throws MalformattedUsernameException
+	 * @throws MalformattedEmailException
+	 */
 	@PutMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void updateUser(@PathVariable int id, @RequestBody UserDto userDto) {
-		// TODO Auto-generated method stub
+	public void updateUser(@PathVariable int id, @RequestBody UserDto userDto)
+			throws MalformattedUsernameException, MalformattedEmailException {
+
+		this.validateDto(userDto);
+		this.userService.getUser(id);
+		this.userService.createOrUpdateUser(userDto.dtoToPojo());
 	}
 
+	/**
+	 * 
+	 * @param id
+	 */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void deleteUser(@PathVariable int id) {
-		// TODO Auto-generated method stub
+
+		this.userService.deleteUser(id);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@GetMapping
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<User> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<UserDto> getAllUsers() {
+
+		List<User> userList = this.userService.getAllUsers();
+		List<UserDto> userDtoList = new ArrayList<>();
+
+		for (User user : userList) {
+			userDtoList.add(new UserDto(user));
+		}
+
+		return userDtoList;
+	}
+
+	/**
+	 * 
+	 * @param userDto
+	 * @throws MalformattedUsernameException
+	 * @throws MalformattedEmailException
+	 */
+	private void validateDto(UserDto userDto) throws MalformattedUsernameException, MalformattedEmailException {
+
+		DataValidator dataValidator = new DataValidator();
+
+		if (!dataValidator.isUsernameValid(userDto.getUsername()))
+			throw new MalformattedUsernameException("Username is invalidly formatted.");
+
+		if (!dataValidator.isEmailValid(userDto.getEmail()))
+			throw new MalformattedEmailException("Username is invalidly formatted.");
 	}
 }
