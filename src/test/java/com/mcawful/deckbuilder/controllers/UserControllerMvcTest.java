@@ -5,7 +5,6 @@ package com.mcawful.deckbuilder.controllers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,14 +28,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.mcawful.deckbuilder.aspects.GlobalControllerExceptionHandler;
 import com.mcawful.deckbuilder.dtos.UserDto;
 import com.mcawful.deckbuilder.models.User;
@@ -260,7 +256,7 @@ class UserControllerMvcTest {
 	/**
 	 * Tests the 'updateUser' method of the {@link UserControllerMvc} when a
 	 * {@link UserDto} is passed in with a non-existent reference ID. Test expects
-	 * the response status is 'BAD REQUEST' and verifies that the 'getUser' method
+	 * the response status is 'NOT FOUND' and verifies that the 'getUser' method
 	 * of the {@link UserService} was called.
 	 * 
 	 * @throws Exception
@@ -274,7 +270,7 @@ class UserControllerMvcTest {
 				.content(this.userJson).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.accept(MediaType.APPLICATION_JSON_VALUE);
 
-		this.mockMvc.perform(request).andExpect(status().isBadRequest());
+		this.mockMvc.perform(request).andExpect(status().isNotFound());
 
 		verify(this.userService).getUser(this.user.getId());
 	}
