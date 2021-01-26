@@ -34,7 +34,6 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
@@ -115,6 +114,10 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'getUser' method of the {@link UserControllerMvc} when passed a
+	 * valid reference ID. Test expects that the response status is 'OK' and that
+	 * the response JSON {@link String} matches what is expected and verifies that
+	 * the 'getUser' method of the {@link UserService} was called.
 	 * 
 	 * @throws Exception
 	 */
@@ -132,6 +135,11 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'getUser' method of the {@link UserControllerMvc} when passed an
+	 * invalid reference ID which would cause the 'getUser' method of the
+	 * {@link UserService} to throw a {@link NoSuchElementException}. Test expects
+	 * that the response status is 'NOT FOUND' and verifies that the 'getUser'
+	 * method of the {@link UserService} was called.
 	 * 
 	 * @throws Exception
 	 */
@@ -148,6 +156,10 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'createUser' method of the {@link UserControllerMvc} when a valid
+	 * and unique {@link UserDto} is passed in. Test expects the response status is
+	 * 'CREATED' and verifies that the 'createOrUpdateUser' of the
+	 * {@link UserService} was called.
 	 * 
 	 * @throws Exception
 	 */
@@ -165,6 +177,9 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'createUser' method of the {@link UserControllerMvc} when a
+	 * {@link UserDto} with an invalidly formatted 'username' field is passed in.
+	 * Test expects the response status is 'BAD REQUEST'.
 	 * 
 	 * @throws Exception
 	 */
@@ -181,6 +196,9 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'createUser' method of the {@link UserControllerMvc} when a
+	 * {@link UserDto} with an invalidly formatted 'email' field is passed in. Test
+	 * expects the response status is 'BAD REQUEST'.
 	 * 
 	 * @throws Exception
 	 */
@@ -197,6 +215,10 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'createUser' method of the {@link UserControllerMvc} when a
+	 * {@link UserDto} with a field that violates a database constraint (such as an
+	 * email or username that already exists in the table) is passed in. Test
+	 * expects the response status is 'CONFLICT'.
 	 * 
 	 * @throws Exception
 	 */
@@ -212,6 +234,10 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'updateUser' method of the {@link UserControllerMvc} when a valid
+	 * and unique {@link UserDto} is passed in with a valid reference ID. Test
+	 * expects the response status is 'OK' and verifies that the 'getUser' and
+	 * 'createOrUpdateUser' methods of the {@link UserService} were called.
 	 * 
 	 * @throws Exception
 	 */
@@ -232,6 +258,10 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'updateUser' method of the {@link UserControllerMvc} when a
+	 * {@link UserDto} is passed in with a non-existent reference ID. Test expects
+	 * the response status is 'BAD REQUEST' and verifies that the 'getUser' method
+	 * of the {@link UserService} was called.
 	 * 
 	 * @throws Exception
 	 */
@@ -245,9 +275,14 @@ class UserControllerMvcTest {
 				.accept(MediaType.APPLICATION_JSON_VALUE);
 
 		this.mockMvc.perform(request).andExpect(status().isBadRequest());
+
+		verify(this.userService).getUser(this.user.getId());
 	}
 
 	/**
+	 * Tests the 'updateUser' method of the {@link UserControllerMvc} when a
+	 * {@link UserDto} with an invalidly formatted 'username' field is passed in.
+	 * Test expects the response status is 'BAD REQUEST'.
 	 * 
 	 * @throws Exception
 	 */
@@ -265,6 +300,9 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'updateUser' method of the {@link UserControllerMvc} when a
+	 * {@link UserDto} with an invalidly formatted 'email' field is passed in. Test
+	 * expects the response status is 'BAD REQUEST'.
 	 * 
 	 * @throws Exception
 	 */
@@ -282,6 +320,10 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'updateUser' method of the {@link UserControllerMvc} when a
+	 * {@link UserDto} with a field that violates a database constraint (such as an
+	 * email or username that already exists in the table) is passed in with a valid
+	 * reference ID. Test expects the response status is 'CONFLICT'.
 	 * 
 	 * @throws Exception
 	 */
@@ -300,6 +342,9 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'deleteUser' method of the {@link UserControllerMvc} when passed a
+	 * valid reference ID. Test expects the response status to be 'OK' and verifies
+	 * that the 'deleteUser' method of the {@link UserService} is called.
 	 * 
 	 * @throws Exception
 	 */
@@ -326,38 +371,32 @@ class UserControllerMvcTest {
 	}
 
 	/**
+	 * Tests the 'getAllUsers' method of the {@link UserControllerMvc}. Test expects
+	 * the response status to be 'OK' and that the response body matches what is
+	 * expected and verifies that the 'getAllUsers' method of the
+	 * {@link UserService} was called.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	void getAllUserTest() throws Exception {
+	void getAllUsersTest() throws Exception {
 
-		List<User> userList = new ArrayList<User>();
-		List<UserDto> userDtoList = new ArrayList<UserDto>();
-		List<UserDto> returnedList = null;
+		List<User> userList = new ArrayList<>();
+		List<UserDto> userDtoList = new ArrayList<>();
+		String returnedJson;
 
 		userList.add(this.user);
 		userDtoList.add(this.userDto);
+
+		returnedJson = new ObjectMapper().writeValueAsString(userDtoList);
 
 		when(this.userService.getAllUsers()).thenReturn(userList);
 
 		RequestBuilder request = MockMvcRequestBuilders.get(this.baseUri);
 
-		MvcResult result = this.mockMvc.perform(request).andExpect(status().isOk()).andReturn();
-
-		String responseBody = result.getResponse().getContentAsString();
-
-		try {
-			returnedList = new ObjectMapper().readValue(responseBody, new TypeReference<List<UserDto>>() {
-			});
-		} catch (MismatchedInputException e) {
-			e.printStackTrace();
-			fail("Returned JSON did not match expected object.");
-		}
+		this.mockMvc.perform(request).andExpect(status().isOk())
+				.andExpect(MockMvcResultMatchers.content().string(returnedJson));
 
 		verify(this.userService).getAllUsers();
-
-		assertEquals(userDtoList, returnedList,
-				"Expected '" + userDtoList + "' but got '" + returnedList + "' instead.");
 	}
 }
