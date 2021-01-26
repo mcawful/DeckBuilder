@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 	 *                                         database constraints
 	 */
 	@Override
-	public User createOrUpdateUser(User user) throws IllegalArgumentException, DataIntegrityViolationException {
+	public User createOrUpdateUser(User user) throws DataIntegrityViolationException {
 
 		return this.userRepo.save(user);
 	}
