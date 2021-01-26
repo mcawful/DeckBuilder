@@ -39,6 +39,8 @@ import com.mcawful.deckbuilder.models.User;
 import com.mcawful.deckbuilder.services.UserService;
 
 /**
+ * Tests for the {@link UserControllerMvc} class.
+ * 
  * @author Michael McAuliffe
  *
  */
@@ -256,7 +258,7 @@ class UserControllerMvcTest {
 	/**
 	 * Tests the 'updateUser' method of the {@link UserControllerMvc} when a
 	 * {@link UserDto} is passed in with a non-existent reference ID. Test expects
-	 * the response status is 'NOT FOUND' and verifies that the 'getUser' method
+	 * the response status is 'BAD REQUEST' and verifies that the 'getUser' method
 	 * of the {@link UserService} was called.
 	 * 
 	 * @throws Exception
@@ -270,7 +272,7 @@ class UserControllerMvcTest {
 				.content(this.userJson).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.accept(MediaType.APPLICATION_JSON_VALUE);
 
-		this.mockMvc.perform(request).andExpect(status().isNotFound());
+		this.mockMvc.perform(request).andExpect(status().isBadRequest());
 
 		verify(this.userService).getUser(this.user.getId());
 	}

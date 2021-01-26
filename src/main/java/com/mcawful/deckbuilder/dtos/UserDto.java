@@ -80,8 +80,8 @@ public class UserDto implements DtoConverter<User> {
 	public User dtoToPojo() {
 
 		LocalDateTime dateTime = null;
-		
-		if(!this.accountCreationDate.isEmpty())
+
+		if (!this.accountCreationDate.isEmpty())
 			dateTime = LocalDateTime.parse(this.accountCreationDate);
 
 		return new User(0, this.username, this.email, dateTime, this.accountActive);
