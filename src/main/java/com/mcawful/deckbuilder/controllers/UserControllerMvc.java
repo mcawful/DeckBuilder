@@ -5,6 +5,8 @@ package com.mcawful.deckbuilder.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mcawful.deckbuilder.dtos.UserDto;
 import com.mcawful.deckbuilder.exceptions.MalformattedEmailException;
 import com.mcawful.deckbuilder.exceptions.MalformattedUsernameException;
+import com.mcawful.deckbuilder.exceptions.NoSuchEntityToUpdateException;
 import com.mcawful.deckbuilder.models.User;
 import com.mcawful.deckbuilder.services.UserService;
 import com.mcawful.deckbuilder.utils.DataValidator;
@@ -88,14 +91,22 @@ public class UserControllerMvc {
 	 * @throws MalformattedEmailException    When the {@link UserDto} object's
 	 *                                       {@link String} email field is
 	 *                                       improperly formatted
+	 * @throws NoSuchEntityToUpdateException When the give ID does not match to any
+	 *                                       existing {@link UserDto} objects
 	 */
 	@PutMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
 	public void updateUser(@PathVariable int id, @RequestBody UserDto userDto)
-			throws MalformattedUsernameException, MalformattedEmailException {
+			throws MalformattedUsernameException, MalformattedEmailException, NoSuchEntityToUpdateException {
 
 		this.validateDto(userDto);
-		this.userService.getUser(id); // Checks that the element already exists
+
+		try {
+			this.userService.getUser(id);
+		} catch (NoSuchElementException e) {
+			throw new NoSuchEntityToUpdateException("Cannot perform update, entity does not exist.");
+		}
+
 		this.userService.createOrUpdateUser(userDto.dtoToPojo());
 	}
 
