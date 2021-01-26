@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUser(int id) throws NoSuchElementException {
 
-		return this.userRepo.findById(id).orElseThrow();
+		return this.userRepo.findById(id).orElseThrow(NoSuchElementException::new);
 	}
 
 	/**
