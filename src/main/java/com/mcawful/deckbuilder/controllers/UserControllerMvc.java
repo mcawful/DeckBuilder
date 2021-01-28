@@ -143,8 +143,9 @@ public class UserControllerMvc {
 
 	/**
 	 * Method that takes a {@link UserDto} object and throws exceptions if either
-	 * the {@link String} username or {@link String} email field is not properly
-	 * formatted.
+	 * the {@link String} username field or {@link String} email field is not
+	 * properly formatted. The {@link String} username field is checked before the
+	 * {@link String} email field.
 	 * 
 	 * @param userDto The given {@link UserDto} object to validate
 	 * @throws MalformattedUsernameException When the {@link String} username is
