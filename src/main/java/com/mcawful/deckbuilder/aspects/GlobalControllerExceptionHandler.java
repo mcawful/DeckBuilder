@@ -42,8 +42,8 @@ public class GlobalControllerExceptionHandler {
 	}
 
 	/**
-	 * Method to handle the HTTP response when a {@link IllegalArgumentException}
-	 * occurs. Response code is 400.
+	 * Method to handle the HTTP response code when a
+	 * {@link IllegalArgumentException} occurs. Response code is 400.
 	 */
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "An illegal request was made.") // 400
 	@ExceptionHandler(IllegalArgumentException.class)
