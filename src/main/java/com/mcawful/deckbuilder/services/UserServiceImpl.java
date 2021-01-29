@@ -70,7 +70,6 @@ public class UserServiceImpl implements UserService {
 	 * {@link UserRepo} repository's 'deleteById' method.
 	 * 
 	 * @param id The ID of the existing {@link User} object
-	 * @return The deleted {@link User} object
 	 */
 	@Override
 	public void deleteUser(int id) {

@@ -46,7 +46,6 @@ public interface UserService {
 	 * Method for handling a DELETE request for a {@link User} object.
 	 * 
 	 * @param id The ID of the existing {@link User} object
-	 * @return The deleted {@link User} object
 	 */
 	public void deleteUser(int id);
 
