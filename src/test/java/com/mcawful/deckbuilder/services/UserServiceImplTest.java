@@ -178,7 +178,7 @@ class UserServiceImplTest {
 	 * @throws Exception
 	 */
 	@Test
-	void createOrUpdateUserTest_DataConstrainstViolation() throws Exception {
+	void createOrUpdateUserTest_DataConstraintViolation() throws Exception {
 		when(this.userRepo.save(this.user)).thenThrow(DataIntegrityViolationException.class);
 
 		assertThrows(DataIntegrityViolationException.class, () -> this.userService.createOrUpdateUser(this.user),
