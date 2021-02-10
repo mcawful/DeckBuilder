@@ -34,7 +34,7 @@ public class User {
 	 * The ID of the {@link User} object.
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column
 	private int id;
 
