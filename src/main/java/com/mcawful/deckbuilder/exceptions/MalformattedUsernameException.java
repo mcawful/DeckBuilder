@@ -12,9 +12,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Michael McAuliffe
  *
  */
-@SuppressWarnings("serial")
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Username is not in a vaild format.")
 public class MalformattedUsernameException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2208187420960063181L;
 
 	/**
 	 * The default constructor for the {@link MalformattedUsernameException} class.
