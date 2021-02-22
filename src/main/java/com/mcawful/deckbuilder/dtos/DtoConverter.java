@@ -11,6 +11,7 @@ package com.mcawful.deckbuilder.dtos;
  * @author Michael McAuliffe
  * 
  */
+@FunctionalInterface
 public interface DtoConverter<T> {
 
 	/**
