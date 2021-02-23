@@ -51,8 +51,8 @@ public class UserServiceImpl implements UserService {
 	 * Method to handle a POST or PUT request for a {@link User} object. Calls the
 	 * {@link UserRepo} repository's 'save' method.
 	 * 
-	 * @param user The {@link User} object to be added or updated
-	 * @return The added or updated {@link User} object
+	 * @param user The {@link User} object to be created or updated
+	 * @return The created or updated {@link User} object
 	 * @throws IllegalArgumentException        When passed a null {@link User}
 	 *                                         object
 	 * @throws DataIntegrityViolationException When passed a {@link User} object
