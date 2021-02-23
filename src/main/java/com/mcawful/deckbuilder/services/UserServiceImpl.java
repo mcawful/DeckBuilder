@@ -24,8 +24,16 @@ import com.mcawful.deckbuilder.repos.UserRepo;
 @Service
 public class UserServiceImpl implements UserService {
 
+	/**
+	 * The {@link UserRepo} object.
+	 */
 	private UserRepo userRepo;
 
+	/**
+	 * Autowires the {@link UserRepo}.
+	 * 
+	 * @param userRepo
+	 */
 	@Autowired
 	public UserServiceImpl(UserRepo userRepo) {
 		super();

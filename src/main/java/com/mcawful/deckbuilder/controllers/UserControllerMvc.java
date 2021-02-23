@@ -38,8 +38,16 @@ import com.mcawful.deckbuilder.utils.DataValidator;
 @RequestMapping("/user")
 public class UserControllerMvc {
 
+	/**
+	 * The {@link UserService} object.
+	 */
 	UserService userService;
 
+	/**
+	 * Autowires the {@link UserService}.
+	 * 
+	 * @param userService
+	 */
 	@Autowired
 	public UserControllerMvc(UserService userService) {
 		super();
