@@ -36,15 +36,15 @@ public class UserServiceImpl implements UserService {
 	 * Method to handle a GET operation for a {@link User} object. Calls the
 	 * {@link UserRepo} repository's 'findById' method.
 	 * 
-	 * @param id The ID of the {@link User} object
+	 * @param useranme The {@link String} username of the {@link User} object
 	 * @return The related {@link User} object
 	 * @throws NoSuchElementException When related {@link User} object cannot be
 	 *                                found in the database
 	 */
 	@Override
-	public User getUser(int id) throws NoSuchElementException {
+	public User getUser(String username) throws NoSuchElementException {
 
-		return this.userRepo.findById(id).orElseThrow(NoSuchElementException::new);
+		return this.userRepo.findByUsername(username).orElseThrow(NoSuchElementException::new);
 	}
 
 	/**

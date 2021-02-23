@@ -22,12 +22,12 @@ public interface UserService {
 	/**
 	 * Method meant to handle a GET operation for a {@link User} object.
 	 * 
-	 * @param id The ID of the {@link User} object
+	 * @param username The {@link String} username of the {@link User} object
 	 * @return The related {@link User} object
 	 * @throws NoSuchElementException When related {@link User} object cannot be
 	 *                                found in the database
 	 */
-	public User getUser(int id) throws NoSuchElementException;
+	public User getUser(String username) throws NoSuchElementException;
 
 	/**
 	 * Method meant to handle a POST or PUT request for a {@link User} object.

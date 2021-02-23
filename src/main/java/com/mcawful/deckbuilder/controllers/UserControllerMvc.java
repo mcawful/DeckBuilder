@@ -49,14 +49,14 @@ public class UserControllerMvc {
 	/**
 	 * GET method for retrieving a {@link UserDto} object.
 	 * 
-	 * @param id The ID of the {@link UserDto} object
-	 * @return The {@link UserDto} that matches the given ID
+	 * @param username The {@link String} username of the {@link UserDto} object
+	 * @return The {@link UserDto} that matches the given {@link String} username
 	 */
-	@GetMapping("/{id}")
+	@GetMapping("/{username}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public UserDto getUser(@PathVariable int id) {
+	public UserDto getUser(@PathVariable String username) {
 
-		User user = this.userService.getUser(id);
+		User user = this.userService.getUser(username);
 		return new UserDto(user);
 	}
 
@@ -83,26 +83,28 @@ public class UserControllerMvc {
 	/**
 	 * PUT method for updating an existing {@link UserDto} object.
 	 * 
-	 * @param id      The ID of the existing {@link UserDto} object
-	 * @param userDto The updated {@link UserDto} object
+	 * @param username The {@link String} username of the existing {@link UserDto}
+	 *                 object
+	 * @param userDto  The updated {@link UserDto} object
 	 * @throws MalformattedUsernameException When the {@link UserDto} object's
 	 *                                       {@link String} username field is
 	 *                                       improperly formatted
 	 * @throws MalformattedEmailException    When the {@link UserDto} object's
 	 *                                       {@link String} email field is
 	 *                                       improperly formatted
-	 * @throws NoSuchEntityToUpdateException When the give ID does not match to any
-	 *                                       existing {@link UserDto} objects
+	 * @throws NoSuchEntityToUpdateException When the given {@link String} username
+	 *                                       does not match to any existing
+	 *                                       {@link UserDto} objects
 	 */
-	@PutMapping("/{id}")
+	@PutMapping("/{username}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void updateUser(@PathVariable int id, @RequestBody UserDto userDto)
+	public void updateUser(@PathVariable String username, @RequestBody UserDto userDto)
 			throws MalformattedUsernameException, MalformattedEmailException, NoSuchEntityToUpdateException {
 
 		this.validateDto(userDto);
 
 		try {
-			this.userService.getUser(id);
+			this.userService.getUser(username);
 		} catch (NoSuchElementException e) {
 			throw new NoSuchEntityToUpdateException("Cannot perform update, entity does not exist.");
 		}
