@@ -8,7 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Model used to save user login information in the database.
@@ -18,6 +21,8 @@ import lombok.Data;
  */
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Login {
 
 	/**
@@ -69,4 +74,22 @@ public class Login {
 	 */
 	@Column
 	private boolean enabled;
+
+	/**
+	 * Constructor for creating new user {@link Login} objects.
+	 * 
+	 * @param roles    {@link String} of authorized user roles
+	 * @param username {@link String} of user's username
+	 * @param password {@link String} of user's password
+	 */
+	public Login(String roles, String username, String password) {
+		this.setId(0);
+		this.setRoles(roles);
+		this.setUsername(username);
+		this.setPassword(password);
+		this.setAccountNonExpired(true);
+		this.setAccountNonLocked(true);
+		this.setCredentialsNonExpired(true);
+		this.setEnabled(true);
+	}
 }

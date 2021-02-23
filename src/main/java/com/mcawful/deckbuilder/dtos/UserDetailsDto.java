@@ -4,6 +4,7 @@
 package com.mcawful.deckbuilder.dtos;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.mcawful.deckbuilder.models.Login;
 
-import lombok.Data;
+import lombok.Getter;
 
 /**
  * Used with the Spring Security configuration to authorize and authenticate
@@ -22,7 +23,7 @@ import lombok.Data;
  * @author Michael McAuliffe
  *
  */
-@Data
+@Getter
 public class UserDetailsDto implements UserDetails {
 
 	private static final long serialVersionUID = 6476506223560386489L;
@@ -68,13 +69,16 @@ public class UserDetailsDto implements UserDetails {
 	 */
 	public UserDetailsDto(Login login) {
 		super();
-		this.setAuthorities(Arrays.stream(login.getRoles().split(",")).map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList()));
-		this.setUsername(login.getUsername());
-		this.setPassword(login.getPassword());
-		this.setAccountNonExpired(login.isAccountNonExpired());
-		this.setAccountNonLocked(login.isAccountNonLocked());
-		this.setCredentialsNonExpired(login.isCredentialsNonExpired());
-		this.setEnabled(login.isEnabled());
+		if (!login.getRoles().isEmpty())
+			this.authorities = Arrays.stream(login.getRoles().split(",")).map(SimpleGrantedAuthority::new)
+					.collect(Collectors.toList());
+		else
+			this.authorities = Collections.<GrantedAuthority>emptyList();
+		this.username = login.getUsername();
+		this.password = login.getPassword();
+		this.accountNonExpired = login.isAccountNonExpired();
+		this.accountNonLocked = login.isAccountNonLocked();
+		this.credentialsNonExpired = login.isCredentialsNonExpired();
+		this.enabled = login.isEnabled();
 	}
 }
