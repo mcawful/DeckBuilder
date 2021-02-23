@@ -20,7 +20,7 @@ import com.mcawful.deckbuilder.models.User;
 public interface UserService {
 
 	/**
-	 * Method meant to handle a GET operation for a {@link User} object.
+	 * Method meant to handle a GET request for a {@link User} object.
 	 * 
 	 * @param username The {@link String} username of the {@link User} object
 	 * @return The related {@link User} object

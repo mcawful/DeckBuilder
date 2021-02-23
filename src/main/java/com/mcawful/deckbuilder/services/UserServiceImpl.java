@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * Method to handle a GET operation for a {@link User} object. Calls the
+	 * Method to handle a GET request for a {@link User} object. Calls the
 	 * {@link UserRepo} repository's 'findById' method.
 	 * 
 	 * @param useranme The {@link String} username of the {@link User} object
