@@ -25,7 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import com.mcawful.deckbuilder.models.User;
+import com.mcawful.deckbuilder.daos.User;
 import com.mcawful.deckbuilder.repos.UserRepo;
 
 /**

@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.mcawful.deckbuilder.daos.Login;
 import com.mcawful.deckbuilder.dtos.UserDetailsDto;
-import com.mcawful.deckbuilder.models.Login;
 import com.mcawful.deckbuilder.repos.LoginRepo;
 
 /**

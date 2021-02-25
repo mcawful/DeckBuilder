@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
-import com.mcawful.deckbuilder.models.User;
+import com.mcawful.deckbuilder.daos.User;
 
 /**
  * Interface for handling the logic for {@link User} objects. Designed for the

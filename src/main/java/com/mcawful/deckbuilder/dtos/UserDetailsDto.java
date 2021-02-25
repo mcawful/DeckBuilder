@@ -11,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.mcawful.deckbuilder.models.Login;
+import com.mcawful.deckbuilder.daos.Login;
 
 import lombok.Data;
 
@@ -62,9 +62,9 @@ public class UserDetailsDto implements UserDetails {
 	private boolean enabled;
 
 	/**
-	 * Constructor that takes in a {@link Login} to construct the fields.
+	 * Constructor that takes in a {@link Login} object to construct the fields.
 	 * 
-	 * @param login The {@link Login} object to construct from.
+	 * @param login the {@link Login} object to construct from
 	 */
 	public UserDetailsDto(Login login) {
 		super();
