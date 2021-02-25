@@ -8,7 +8,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.mcawful.deckbuilder.models.Login;
+import com.mcawful.deckbuilder.daos.Login;
 
 /**
  * Repository for {@link Login} objects.
