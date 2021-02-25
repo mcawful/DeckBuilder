@@ -18,20 +18,20 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
-public class CreateUserDto {
+public class CreateAccountDto {
 
 	/**
-	 * The {@link String} username field.
+	 * {@link String} The username of the {@link CreateAccountDto} object.
 	 */
 	private String username;
 
 	/**
-	 * The {@link String} password field.
+	 * {@link String} The password of the {@link CreateAccountDto} object.
 	 */
 	private String password;
 
 	/**
-	 * The {@link String} email field.
+	 * {@link String} The email of the {@link CreateAccountDto} object.
 	 */
 	private String email;
 
