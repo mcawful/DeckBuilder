@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.mcawful.deckbuilder.models;
+package com.mcawful.deckbuilder.daos;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;
