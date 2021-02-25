@@ -21,8 +21,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.mcawful.deckbuilder.daos.Login;
 import com.mcawful.deckbuilder.dtos.UserDetailsDto;
-import com.mcawful.deckbuilder.models.Login;
 import com.mcawful.deckbuilder.repos.LoginRepo;
 
 /**

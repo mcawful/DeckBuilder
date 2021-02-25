@@ -22,9 +22,18 @@ public interface LoginRepo extends JpaRepository<Login, Integer> {
 	/**
 	 * Finds a {@link Login} object by {@link String} username.
 	 * 
-	 * @param username The {@link String} username of the {@link Login} object to
+	 * @param username the {@link String} username of the {@link Login} object to
 	 *                 find.
-	 * @return An {@link Optional} of a {@link Login} object.
+	 * @return an {@link Optional} of a {@link Login} object.
 	 */
-	Optional<Login> findByUsername(String username);
+	public Optional<Login> findByUsername(String username);
+
+	/**
+	 * Deletes a {@link Login} object by {@link String} username.
+	 * 
+	 * @param username the {@link String} username of the {@link Login} object to
+	 *                 delete.
+	 */
+	public void deleteByUsername(String username);
+
 }
