@@ -23,7 +23,7 @@ public class MalformattedUsernameException extends Exception {
 	/**
 	 * The default constructor for the {@link MalformattedUsernameException} class.
 	 * 
-	 * @param message The {@link String} error message
+	 * @param message the {@link String} error message
 	 */
 	public MalformattedUsernameException(String message) {
 		super(message);

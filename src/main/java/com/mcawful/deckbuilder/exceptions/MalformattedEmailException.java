@@ -23,7 +23,7 @@ public class MalformattedEmailException extends Exception {
 	/**
 	 * The default constructor for the {@link MalformattedEmailException} class.
 	 * 
-	 * @param message The {@link String} error message
+	 * @param message the {@link String} error message
 	 */
 	public MalformattedEmailException(String message) {
 		super(message);

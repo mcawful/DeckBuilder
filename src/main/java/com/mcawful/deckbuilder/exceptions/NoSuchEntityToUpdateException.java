@@ -24,7 +24,7 @@ public class NoSuchEntityToUpdateException extends Exception {
 	/**
 	 * The default constructor for the {@link NoSuchEntityToUpdateException} class.
 	 * 
-	 * @param message The {@link String} error message
+	 * @param message the {@link String} error message
 	 */
 	public NoSuchEntityToUpdateException(String message) {
 		super(message);
