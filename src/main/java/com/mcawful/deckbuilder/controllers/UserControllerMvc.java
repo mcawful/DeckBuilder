@@ -18,13 +18,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.mcawful.deckbuilder.dtos.CreateAccountDto;
+import com.mcawful.deckbuilder.dtos.UpdateAccountDto;
+import com.mcawful.deckbuilder.daos.User;
 import com.mcawful.deckbuilder.dtos.UserDto;
 import com.mcawful.deckbuilder.exceptions.MalformattedEmailException;
 import com.mcawful.deckbuilder.exceptions.MalformattedUsernameException;
 import com.mcawful.deckbuilder.exceptions.NoSuchEntityToUpdateException;
-import com.mcawful.deckbuilder.models.User;
 import com.mcawful.deckbuilder.services.UserService;
 import com.mcawful.deckbuilder.utils.DataValidator;
+import com.mcawful.deckbuilder.utils.MakeUsers;
 
 /**
  * This controller contains the endpoints relating to the {@link User} object.
@@ -57,8 +61,8 @@ public class UserControllerMvc {
 	/**
 	 * GET method for retrieving a {@link UserDto} object.
 	 * 
-	 * @param username The {@link String} username of the {@link UserDto} object
-	 * @return The {@link UserDto} that matches the given {@link String} username
+	 * @param username the {@link String} username of the {@link UserDto} object
+	 * @return the {@link UserDto} that matches the given {@link String} username
 	 */
 	@GetMapping("/{username}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -69,47 +73,48 @@ public class UserControllerMvc {
 	}
 
 	/**
-	 * POST method for creating a new {@link UserDto} object.
+	 * POST method for creating a new {@link User} and {@link Login} object.
 	 * 
-	 * @param userDto The {@link UserDto} to create
-	 * @throws MalformattedUsernameException When the {@link UserDto} object's
-	 *                                       {@link String} username field is
-	 *                                       improperly formatted
-	 * @throws MalformattedEmailException    When the {@link UserDto} object's
-	 *                                       {@link String} email field is
+	 * @param dto the {@link CreateAccountDto} to create from
+	 * @throws MalformattedUsernameException when the {@link CreateAccountDto}
+	 *                                       object's {@link String} username field
+	 *                                       is improperly formatted
+	 * @throws MalformattedEmailException    when the {@link CreateAccountDto}
+	 *                                       object's {@link String} email field is
 	 *                                       improperly formatted
 	 */
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void createUser(@RequestBody UserDto userDto)
+	public void createUser(@RequestBody CreateAccountDto dto)
 			throws MalformattedUsernameException, MalformattedEmailException {
 
-		this.validateDto(userDto);
-		this.userService.createOrUpdateUser(userDto.dtoToPojo());
+		this.validateDto(dto);
+
+		this.userService.createOrUpdateUser(MakeUsers.convert(dto));
 	}
 
 	/**
-	 * PUT method for updating an existing {@link UserDto} object.
+	 * PUT method for updating an existing {@link User} object.
 	 * 
-	 * @param username The {@link String} username of the existing {@link UserDto}
+	 * @param username the {@link String} username of the existing {@link UserDto}
 	 *                 object
-	 * @param userDto  The updated {@link UserDto} object
-	 * @throws MalformattedUsernameException When the {@link UserDto} object's
+	 * @param dto      the {@link UserDto} object to update from
+	 * @throws MalformattedUsernameException when the {@link UserDto} object's
 	 *                                       {@link String} username field is
 	 *                                       improperly formatted
-	 * @throws MalformattedEmailException    When the {@link UserDto} object's
+	 * @throws MalformattedEmailException    when the {@link UserDto} object's
 	 *                                       {@link String} email field is
 	 *                                       improperly formatted
-	 * @throws NoSuchEntityToUpdateException When the given {@link String} username
+	 * @throws NoSuchEntityToUpdateException when the given {@link String} username
 	 *                                       does not match to any existing
 	 *                                       {@link UserDto} objects
 	 */
 	@PutMapping("/{username}")
 	@ResponseStatus(value = HttpStatus.OK)
-	public void updateUser(@PathVariable String username, @RequestBody UserDto userDto)
+	public void updateUser(@PathVariable String username, @RequestBody UpdateAccountDto dto)
 			throws MalformattedUsernameException, MalformattedEmailException, NoSuchEntityToUpdateException {
 
-		this.validateDto(userDto);
+		this.validateDto(dto);
 
 		try {
 			this.userService.getUser(username);
@@ -117,13 +122,13 @@ public class UserControllerMvc {
 			throw new NoSuchEntityToUpdateException("Cannot perform update, entity does not exist.");
 		}
 
-		this.userService.createOrUpdateUser(userDto.dtoToPojo());
+		this.userService.createOrUpdateUser(MakeUsers.convert(dto));
 	}
 
 	/**
-	 * DELETE method for removing a {@link UserDto} object.
+	 * DELETE method for removing a {@link User} object.
 	 * 
-	 * @param id The ID of the {@link UserDto} to delete
+	 * @param id the ID of the {@link User} to delete
 	 */
 	@DeleteMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.OK)
@@ -133,9 +138,9 @@ public class UserControllerMvc {
 	}
 
 	/**
-	 * GET method for retrieving all {@link UserDto} objects.
+	 * GET method for retrieving all {@link User} objects.
 	 * 
-	 * @return A {@link List} of all {@link UserDto} objects
+	 * @return a {@link List} of all {@link UserDto} objects
 	 */
 	@GetMapping
 	@ResponseStatus(value = HttpStatus.OK)
@@ -152,25 +157,44 @@ public class UserControllerMvc {
 	}
 
 	/**
-	 * Method that takes a {@link UserDto} object and throws exceptions if either
-	 * the {@link String} username field or {@link String} email field is not
+	 * Method that takes a {@link UserLoginDto} object and throws exceptions if
+	 * either the {@link String} username field or {@link String} email field is not
 	 * properly formatted. The {@link String} username field is checked before the
 	 * {@link String} email field.
 	 * 
-	 * @param userDto The given {@link UserDto} object to validate
-	 * @throws MalformattedUsernameException When the {@link String} username is
+	 * @param dto the given {@link UserLoginDto} object to validate
+	 * @throws MalformattedUsernameException when the {@link String} username is
 	 *                                       improperly formatted
-	 * @throws MalformattedEmailException    When the {@link String} email is
+	 * @throws MalformattedEmailException    when the {@link String} email is
 	 *                                       improperly formatted
 	 */
-	private void validateDto(UserDto userDto) throws MalformattedUsernameException, MalformattedEmailException {
+	private void validateDto(CreateAccountDto dto) throws MalformattedUsernameException, MalformattedEmailException {
 
-		DataValidator dataValidator = new DataValidator();
-
-		if (!dataValidator.isUsernameValid(userDto.getUsername()))
+		if (!DataValidator.isUsernameValid(dto.getUsername().toLowerCase()))
 			throw new MalformattedUsernameException("Username is invalidly formatted.");
 
-		if (!dataValidator.isEmailValid(userDto.getEmail()))
+		if (!DataValidator.isEmailValid(dto.getEmail().toLowerCase()))
+			throw new MalformattedEmailException("Email is invalidly formatted.");
+	}
+
+	/**
+	 * Method that takes a {@link UpdateAccountDto} object and throws exceptions if
+	 * either the {@link String} username field or {@link String} email field is not
+	 * properly formatted. The {@link String} username field is checked before the
+	 * {@link String} email field.
+	 * 
+	 * @param dto the given {@link UpdateAccountDto} object to validate
+	 * @throws MalformattedUsernameException when the {@link String} username is
+	 *                                       improperly formatted
+	 * @throws MalformattedEmailException    when the {@link String} email is
+	 *                                       improperly formatted
+	 */
+	private void validateDto(UpdateAccountDto dto) throws MalformattedUsernameException, MalformattedEmailException {
+
+		if (!DataValidator.isUsernameValid(dto.getUsername().toLowerCase()))
+			throw new MalformattedUsernameException("Username is invalidly formatted.");
+
+		if (!DataValidator.isEmailValid(dto.getEmail().toLowerCase()))
 			throw new MalformattedEmailException("Email is invalidly formatted.");
 	}
 }
