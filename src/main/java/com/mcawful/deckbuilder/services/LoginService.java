@@ -9,13 +9,16 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import com.mcawful.deckbuilder.daos.Login;
 
 /**
+ * Service that handles the logic for dealing with {@link Login} objects. Makes
+ * calls to the {@link LoginRepo} for basic CRUD operations.
+ * 
  * @author Michael McAuliffe
  *
  */
 public interface LoginService {
 
 	/**
-	 * Method meant to handle a POST or PUT request for a {@link Login} object.
+	 * Method to handle a POST or PUT request for a {@link Login} object.
 	 * 
 	 * @param login The {@link Login} object to create or update
 	 * @return the created or updated {@link Login} object
@@ -27,7 +30,7 @@ public interface LoginService {
 	public Login createOrUpdateLogin(Login login) throws IllegalArgumentException, DataIntegrityViolationException;
 
 	/**
-	 * Method meant to handle a DELETE request for a {@link Login} Object.
+	 * Method to handle a DELETE request for a {@link Login} Object.
 	 * 
 	 * @param username The {@link String} username of the existing {@link Login}
 	 *                 object
