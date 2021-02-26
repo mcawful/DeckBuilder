@@ -25,7 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import com.mcawful.deckbuilder.models.User;
+import com.mcawful.deckbuilder.daos.User;
 import com.mcawful.deckbuilder.repos.UserRepo;
 
 /**
@@ -90,43 +90,43 @@ class UserServiceImplTest {
 	}
 
 	/**
-	 * Tests the 'getUser' method of the {@link UserServiceImpl} class when an ID
-	 * for an existing {@link User} is passed in. Test verifies that the
-	 * {@link UserRepo} 'findById' method is called and asserts equal that the
-	 * returned {@link User} object matches what is expected.
+	 * Tests the 'getUser' method of the {@link UserServiceImpl} class when a
+	 * {@link String} username for an existing {@link User} is passed in. Test
+	 * verifies that the {@link UserRepo} 'findByUsername' method is called and
+	 * asserts equal that the returned {@link User} object matches what is expected.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void getUserTest_UserExists() throws Exception {
 
-		when(this.userRepo.findById(this.user.getId())).thenReturn(this.optionalUser);
+		when(this.userRepo.findByUsername(this.user.getUsername())).thenReturn(this.optionalUser);
 
-		User returnedUser = this.userService.getUser(this.optionalUser.get().getId());
+		User returnedUser = this.userService.getUser(this.optionalUser.get().getUsername());
 
-		verify(this.userRepo).findById(this.user.getId());
+		verify(this.userRepo).findByUsername(this.user.getUsername());
 
 		assertEquals(this.user, returnedUser, "UserServiceImpl.getUser(" + this.user.getId()
 				+ ") did not return expected User object. Instead returned: " + returnedUser);
 	}
 
 	/**
-	 * Tests the 'getUser' method of the {@link UserServiceImpl} class when an ID
-	 * for a non-existent {@link User} is passed in. Test verifies that the
-	 * {@link UserRepo} 'findById' method is called and asserts that a
-	 * 'NoSuchElementException' exception was thrown.
+	 * Tests the 'getUser' method of the {@link UserServiceImpl} class when a
+	 * {@link String} username for a non-existent {@link User} is passed in. Test
+	 * verifies that the {@link UserRepo} 'findByUsername' method is called and
+	 * asserts that a 'NoSuchElementException' exception was thrown.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void getUserTest_UserDoesNotExist() throws Exception {
 
-		when(this.userRepo.findById(0)).thenReturn(Optional.empty());
+		when(this.userRepo.findByUsername("null")).thenReturn(Optional.empty());
 
-		assertThrows(NoSuchElementException.class, () -> this.userService.getUser(0),
-				"UserServiceImpl.getUser(0) did not throw a 'NoSuchElementException' as expected.");
+		assertThrows(NoSuchElementException.class, () -> this.userService.getUser("null"),
+				"UserServiceImpl.getUser(null) did not throw a 'NoSuchElementException' as expected.");
 
-		verify(this.userRepo).findById(0);
+		verify(this.userRepo).findByUsername("null");
 	}
 
 	/**
@@ -178,7 +178,7 @@ class UserServiceImplTest {
 	 * @throws Exception
 	 */
 	@Test
-	void createOrUpdateUserTest_DataConstrainstViolation() throws Exception {
+	void createOrUpdateUserTest_DataConstraintViolation() throws Exception {
 		when(this.userRepo.save(this.user)).thenThrow(DataIntegrityViolationException.class);
 
 		assertThrows(DataIntegrityViolationException.class, () -> this.userService.createOrUpdateUser(this.user),

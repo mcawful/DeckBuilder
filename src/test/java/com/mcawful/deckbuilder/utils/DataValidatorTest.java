@@ -18,8 +18,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class DataValidatorTest {
 
-	private DataValidator dataValidator;
-
 	/**
 	 * @throws java.lang.Exception
 	 */
@@ -39,8 +37,6 @@ class DataValidatorTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-
-		dataValidator = new DataValidator();
 	}
 
 	/**
@@ -58,9 +54,9 @@ class DataValidatorTest {
 	@Test
 	void isUsernameValidTest_VaildUsername() {
 
-		String valid = "Valid_Username";
+		String valid = "valid_username";
 
-		boolean result = dataValidator.isUsernameValid(valid);
+		boolean result = DataValidator.isUsernameValid(valid);
 
 		assertTrue(result, "Expected the result to be true.");
 	}
@@ -75,7 +71,7 @@ class DataValidatorTest {
 
 		String invaild = "_Invaild Username.";
 
-		boolean result = dataValidator.isUsernameValid(invaild);
+		boolean result = DataValidator.isUsernameValid(invaild);
 
 		assertFalse(result, "Expected the result to be false.");
 	}
@@ -90,7 +86,7 @@ class DataValidatorTest {
 
 		String valid = "valid@email.com";
 
-		boolean result = dataValidator.isEmailValid(valid);
+		boolean result = DataValidator.isEmailValid(valid);
 
 		assertTrue(result, "Expected the result to be true.");
 	}
@@ -105,7 +101,7 @@ class DataValidatorTest {
 
 		String invaild = "Invaild Email";
 
-		boolean result = dataValidator.isEmailValid(invaild);
+		boolean result = DataValidator.isEmailValid(invaild);
 
 		assertFalse(result, "Expected the result to be false.");
 

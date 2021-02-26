@@ -63,7 +63,7 @@ public class UserDetailsDto implements UserDetails {
 	private boolean enabled;
 
 	/**
-	 * Constructor that takes in a {@link Login} to construct the fields.
+	 * Constructor that takes in a {@link Login} object to construct the fields.
 	 * 
 	 * @param login the {@link Login} object to construct from
 	 */

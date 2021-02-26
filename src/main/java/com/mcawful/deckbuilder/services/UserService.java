@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
-import com.mcawful.deckbuilder.models.User;
+import com.mcawful.deckbuilder.daos.User;
 
 /**
  * Interface for handling the logic for {@link User} objects. Designed for the
@@ -20,20 +20,20 @@ import com.mcawful.deckbuilder.models.User;
 public interface UserService {
 
 	/**
-	 * Method meant to handle a GET operation for a {@link User} object.
+	 * Method meant to handle a GET request for a {@link User} object.
 	 * 
-	 * @param id The ID of the {@link User} object
+	 * @param username The {@link String} username of the {@link User} object
 	 * @return The related {@link User} object
 	 * @throws NoSuchElementException When related {@link User} object cannot be
 	 *                                found in the database
 	 */
-	public User getUser(int id) throws NoSuchElementException;
+	public User getUser(String username) throws NoSuchElementException;
 
 	/**
 	 * Method meant to handle a POST or PUT request for a {@link User} object.
 	 * 
-	 * @param user The {@link User} object to be added or updated
-	 * @return The added or updated {@link User} object
+	 * @param user The {@link User} object to be created or updated
+	 * @return The created or updated {@link User} object
 	 * @throws IllegalArgumentException        When passed a null {@link User}
 	 *                                         object
 	 * @throws DataIntegrityViolationException When passed a {@link User} object
@@ -46,7 +46,6 @@ public interface UserService {
 	 * Method for handling a DELETE request for a {@link User} object.
 	 * 
 	 * @param id The ID of the existing {@link User} object
-	 * @return The deleted {@link User} object
 	 */
 	public void deleteUser(int id);
 

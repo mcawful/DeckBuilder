@@ -12,14 +12,18 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author Michael McAuliffe
  *
  */
-@SuppressWarnings("serial")
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Email is not in a vaild format.")
 public class MalformattedEmailException extends Exception {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 448952964645982603L;
+
+	/**
 	 * The default constructor for the {@link MalformattedEmailException} class.
 	 * 
-	 * @param message The {@link String} error message
+	 * @param message the {@link String} error message
 	 */
 	public MalformattedEmailException(String message) {
 		super(message);

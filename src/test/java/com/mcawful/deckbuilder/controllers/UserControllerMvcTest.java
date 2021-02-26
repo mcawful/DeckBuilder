@@ -113,44 +113,45 @@ class UserControllerMvcTest {
 
 	/**
 	 * Tests the 'getUser' method of the {@link UserControllerMvc} when passed a
-	 * valid reference ID. Test expects that the response status is 'OK' and that
-	 * the response JSON {@link String} matches what is expected and verifies that
-	 * the 'getUser' method of the {@link UserService} was called.
+	 * valid reference {@link String} username. Test expects that the response
+	 * status is 'OK' and that the response JSON {@link String} matches what is
+	 * expected and verifies that the 'getUser' method of the {@link UserService}
+	 * was called.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void getUserTest_UserExists() throws Exception {
 
-		when(this.userService.getUser(this.user.getId())).thenReturn(this.user);
+		when(this.userService.getUser(this.user.getUsername())).thenReturn(this.user);
 
-		RequestBuilder request = MockMvcRequestBuilders.get(this.baseUri + "/" + this.user.getId());
+		RequestBuilder request = MockMvcRequestBuilders.get(this.baseUri + "/" + this.user.getUsername());
 
 		this.mockMvc.perform(request).andExpect(status().isOk())
 				.andExpect(MockMvcResultMatchers.content().string(this.userJson));
 
-		verify(this.userService).getUser(this.user.getId());
+		verify(this.userService).getUser(this.user.getUsername());
 	}
 
 	/**
 	 * Tests the 'getUser' method of the {@link UserControllerMvc} when passed an
-	 * invalid reference ID which would cause the 'getUser' method of the
-	 * {@link UserService} to throw a {@link NoSuchElementException}. Test expects
-	 * that the response status is 'NOT FOUND' and verifies that the 'getUser'
-	 * method of the {@link UserService} was called.
+	 * invalid reference {@link String} username which would cause the 'getUser'
+	 * method of the {@link UserService} to throw a {@link NoSuchElementException}.
+	 * Test expects that the response status is 'NOT FOUND' and verifies that the
+	 * 'getUser' method of the {@link UserService} was called.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void getUserTest_UserDoesNotExist() throws Exception {
 
-		when(this.userService.getUser(0)).thenThrow(NoSuchElementException.class);
+		when(this.userService.getUser("null")).thenThrow(NoSuchElementException.class);
 
-		RequestBuilder request = MockMvcRequestBuilders.get(this.baseUri + "/0");
+		RequestBuilder request = MockMvcRequestBuilders.get(this.baseUri + "/null");
 
 		this.mockMvc.perform(request).andExpect(status().isNotFound());
 
-		verify(this.userService).getUser(0);
+		verify(this.userService).getUser("null");
 	}
 
 	/**
@@ -233,48 +234,49 @@ class UserControllerMvcTest {
 
 	/**
 	 * Tests the 'updateUser' method of the {@link UserControllerMvc} when a valid
-	 * and unique {@link UserDto} is passed in with a valid reference ID. Test
-	 * expects the response status is 'OK' and verifies that the 'getUser' and
-	 * 'createOrUpdateUser' methods of the {@link UserService} were called.
+	 * and unique {@link UserDto} is passed in with a valid reference {@link String}
+	 * username. Test expects the response status is 'OK' and verifies that the
+	 * 'getUser' and 'createOrUpdateUser' methods of the {@link UserService} were
+	 * called.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void updateUserTest_SuccessfulUpdate() throws Exception {
 
-		when(this.userService.getUser(this.user.getId())).thenReturn(this.user);
+		when(this.userService.getUser(this.user.getUsername())).thenReturn(this.user);
 		when(this.userService.createOrUpdateUser(this.user)).thenReturn(this.user);
 
-		RequestBuilder request = MockMvcRequestBuilders.put(this.baseUri + "/" + this.user.getId())
+		RequestBuilder request = MockMvcRequestBuilders.put(this.baseUri + "/" + this.user.getUsername())
 				.content(this.userJson).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.accept(MediaType.APPLICATION_JSON_VALUE);
 
 		this.mockMvc.perform(request).andExpect(status().isOk());
 
-		verify(this.userService).getUser(this.user.getId());
+		verify(this.userService).getUser(this.user.getUsername());
 		verify(this.userService).createOrUpdateUser(this.user);
 	}
 
 	/**
 	 * Tests the 'updateUser' method of the {@link UserControllerMvc} when a
-	 * {@link UserDto} is passed in with a non-existent reference ID. Test expects
-	 * the response status is 'BAD REQUEST' and verifies that the 'getUser' method
-	 * of the {@link UserService} was called.
+	 * {@link UserDto} is passed in with a non-existent reference {@link String}
+	 * username. Test expects the response status is 'BAD REQUEST' and verifies that
+	 * the 'getUser' method of the {@link UserService} was called.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
 	void updateUserTest_UserDoesNotExist() throws Exception {
 
-		when(this.userService.getUser(this.user.getId())).thenThrow(NoSuchElementException.class);
+		when(this.userService.getUser(this.user.getUsername())).thenThrow(NoSuchElementException.class);
 
-		RequestBuilder request = MockMvcRequestBuilders.put(this.baseUri + "/" + this.user.getId())
+		RequestBuilder request = MockMvcRequestBuilders.put(this.baseUri + "/" + this.user.getUsername())
 				.content(this.userJson).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.accept(MediaType.APPLICATION_JSON_VALUE);
 
 		this.mockMvc.perform(request).andExpect(status().isBadRequest());
 
-		verify(this.userService).getUser(this.user.getId());
+		verify(this.userService).getUser(this.user.getUsername());
 	}
 
 	/**
@@ -290,7 +292,7 @@ class UserControllerMvcTest {
 		this.userDto.setUsername("_Invaild Username.");
 		this.userJson = new ObjectMapper().writeValueAsString(this.userDto);
 
-		RequestBuilder request = MockMvcRequestBuilders.put(this.baseUri + "/" + this.user.getId())
+		RequestBuilder request = MockMvcRequestBuilders.put(this.baseUri + "/" + this.user.getUsername())
 				.content(this.userJson).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.accept(MediaType.APPLICATION_JSON_VALUE);
 
@@ -310,7 +312,7 @@ class UserControllerMvcTest {
 		this.userDto.setUsername("Invalid Email");
 		this.userJson = new ObjectMapper().writeValueAsString(this.userDto);
 
-		RequestBuilder request = MockMvcRequestBuilders.put(this.baseUri + "/" + this.user.getId())
+		RequestBuilder request = MockMvcRequestBuilders.put(this.baseUri + "/" + this.user.getUsername())
 				.content(this.userJson).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.accept(MediaType.APPLICATION_JSON_VALUE);
 
@@ -321,7 +323,8 @@ class UserControllerMvcTest {
 	 * Tests the 'updateUser' method of the {@link UserControllerMvc} when a
 	 * {@link UserDto} with a field that violates a database constraint (such as an
 	 * email or username that already exists in the table) is passed in with a valid
-	 * reference ID. Test expects the response status is 'CONFLICT'.
+	 * reference {@link String} username. Test expects the response status is
+	 * 'CONFLICT'.
 	 * 
 	 * @throws Exception
 	 */
@@ -330,7 +333,7 @@ class UserControllerMvcTest {
 
 		when(this.userService.createOrUpdateUser(this.user)).thenThrow(DataIntegrityViolationException.class);
 
-		RequestBuilder request = MockMvcRequestBuilders.put(this.baseUri + "/" + this.user.getId())
+		RequestBuilder request = MockMvcRequestBuilders.put(this.baseUri + "/" + this.user.getUsername())
 				.content(this.userJson).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.accept(MediaType.APPLICATION_JSON_VALUE);
 
