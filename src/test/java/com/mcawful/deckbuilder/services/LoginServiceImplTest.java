@@ -92,9 +92,9 @@ class LoginServiceImplTest {
 
 	/**
 	 * Tests the 'createOrUpdateLogin' method of the {@link LoginServiceImpl} class
-	 * when passed a <code>null</code> object. Test verifies that the
-	 * {@link LoginRepo} 'save' method is called and asserts that an
-	 * {@link IllegalArgumentException} is thrown.
+	 * when passed a <code>null</code>. Test verifies that the {@link LoginRepo}
+	 * 'save' method is called and asserts that an {@link IllegalArgumentException}
+	 * is thrown.
 	 * 
 	 * @throws Exception
 	 */
