@@ -23,6 +23,8 @@ import com.mcawful.deckbuilder.daos.Login;
 import com.mcawful.deckbuilder.repos.LoginRepo;
 
 /**
+ * Tests for the methods of the {@link LoginServiceImpl}.
+ * 
  * @author Michael McAuliffe
  *
  */

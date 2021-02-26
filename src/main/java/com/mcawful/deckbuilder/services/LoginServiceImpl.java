@@ -12,6 +12,9 @@ import com.mcawful.deckbuilder.daos.Login;
 import com.mcawful.deckbuilder.repos.LoginRepo;
 
 /**
+ * Service that handles the logic for dealing with {@link Login} objects. Makes
+ * calls to the {@link LoginRepo} for basic CRUD operations.
+ * 
  * @author Michael McAuliffe
  *
  */
