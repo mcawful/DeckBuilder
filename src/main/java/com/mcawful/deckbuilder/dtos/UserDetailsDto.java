@@ -65,7 +65,7 @@ public class UserDetailsDto implements UserDetails {
 	/**
 	 * Constructor that takes in a {@link Login} to construct the fields.
 	 * 
-	 * @param login the {@link Login} object to construct from.
+	 * @param login the {@link Login} object to construct from
 	 */
 	public UserDetailsDto(Login login) {
 		super();
