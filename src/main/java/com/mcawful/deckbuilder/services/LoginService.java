@@ -4,6 +4,7 @@
 package com.mcawful.deckbuilder.services;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.mcawful.deckbuilder.daos.Login;
 
@@ -18,8 +19,7 @@ public interface LoginService {
 	 * 
 	 * @param login The {@link Login} object to create or update
 	 * @return the created or updated {@link Login} object
-	 * @throws IllegalArgumentException        when passed a null {@link Login}
-	 *                                         object
+	 * @throws IllegalArgumentException        when passed a <code>null</code>
 	 * @throws DataIntegrityViolationException when passed a {@link Login} object
 	 *                                         with a field or fields that violates
 	 *                                         database constraints
@@ -31,6 +31,10 @@ public interface LoginService {
 	 * 
 	 * @param username The {@link String} username of the existing {@link Login}
 	 *                 object
+	 * @throws IllegalArgumentException       when passed a <code>null</code>
+	 * @throws EmptyResultDataAccessException when passed a {@link String} username
+	 *                                        that does not match to an existing
+	 *                                        {@link Login} object
 	 */
-	public void deleteLogin(String username);
+	public void deleteLogin(String username) throws IllegalArgumentException, EmptyResultDataAccessException;
 }
