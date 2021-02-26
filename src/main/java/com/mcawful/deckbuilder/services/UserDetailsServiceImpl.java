@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.mcawful.deckbuilder.daos.Login;
 import com.mcawful.deckbuilder.dtos.UserDetailsDto;
-import com.mcawful.deckbuilder.models.Login;
 import com.mcawful.deckbuilder.repos.LoginRepo;
 
 /**
@@ -42,8 +42,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		Optional<Login> login = loginRepo.findByUsername(username);
 
-		return login.map(UserDetailsDto::new)
+		UserDetails userDetails = login.map(UserDetailsDto::new)
 				.orElseThrow(() -> new UsernameNotFoundException("Could not find username: '" + username + "'"));
+
+		if (userDetails.getAuthorities().isEmpty())
+			throw new UsernameNotFoundException("User '" + username + "' has no roles.");
+
+		return userDetails;
 	}
 
 }
