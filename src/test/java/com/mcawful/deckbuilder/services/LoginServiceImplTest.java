@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.mcawful.deckbuilder.daos.Login;
@@ -91,9 +92,9 @@ class LoginServiceImplTest {
 
 	/**
 	 * Tests the 'createOrUpdateLogin' method of the {@link LoginServiceImpl} class
-	 * when a null {@link Login} object is passed in. Test verifies that the
+	 * when passed a <code>null</code> object. Test verifies that the
 	 * {@link LoginRepo} 'save' method is called and asserts that an
-	 * 'IllegalArgumentException' exception is thrown.
+	 * {@link IllegalArgumentException} is thrown.
 	 * 
 	 * @throws Exception
 	 */
@@ -106,6 +107,26 @@ class LoginServiceImplTest {
 				"LoginServiceImpl.createOrUpdateLogin(null) did not throw an 'IllegalArgumentException' as expected.");
 
 		verify(this.loginRepo).save(null);
+	}
+
+	/**
+	 * Tests the 'createOrUpdateLogin' method of the {@link LoginServiceImpl} class
+	 * when a {@link Login} object is passed in with a {@link String} username that
+	 * already exists. Test verifies that the {@link LoginRepo} 'save' method is
+	 * called and asserts that a {@link DataIntegrityViolationException} is thrown.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void createOrUpdateLoginTest_LoginUsernameAlreadyExists() throws Exception {
+
+		when(this.loginRepo.save(this.login)).thenThrow(DataIntegrityViolationException.class);
+
+		assertThrows(DataIntegrityViolationException.class, () -> this.loginService.createOrUpdateLogin(this.login),
+				"LoginServiceImpl.createOrUpdateLogin(" + this.login
+						+ ") did not throw an 'DataIntegrityViolationException' as expected.");
+
+		verify(this.loginRepo).save(this.login);
 	}
 
 	/**
@@ -124,10 +145,29 @@ class LoginServiceImplTest {
 	}
 
 	/**
+	 * Tests the 'deleteLogin' method of the {@link LoginServiceImpl} when passed a
+	 * <code>null</code>. Test asserts that an {@link IllegalArgumentException} was
+	 * thrown and verifies that the {@link LoginRepo} 'deleteByUsername' method was
+	 * called.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	void deleteLoginTest_PassedNullValue() throws Exception {
+
+		doThrow(IllegalArgumentException.class).when(this.loginRepo).deleteByUsername(null);
+
+		assertThrows(IllegalArgumentException.class, () -> this.loginService.deleteLogin(null),
+				"LoginServiceImpl.deleteLogin(" + null + ") did not throw a 'IllegalArgumentException' as expected.");
+
+		verify(this.loginRepo).deleteByUsername(null);
+	}
+
+	/**
 	 * Tests the 'deleteLogin' method of the {@link LoginServiceImpl} when passed an
 	 * non existent {@link String} username in a {@link Login} object. Test asserts
-	 * that a 'EmptyResultDataAccessException' was thrown and verifies that the
-	 * {@link LoginRepo} 'deleteByUsername' method was called.
+	 * that an {@link EmptyResultDataAccessException} was thrown and verifies that
+	 * the {@link LoginRepo} 'deleteByUsername' method was called.
 	 * 
 	 * @throws Exception
 	 */
