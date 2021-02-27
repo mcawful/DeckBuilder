@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * Model used to save user login information in the database.
@@ -49,6 +50,7 @@ public class Login {
 	 * The {@link String} password of the {@link Login} object.
 	 */
 	@Column
+	@ToString.Exclude
 	private String password;
 
 	/**

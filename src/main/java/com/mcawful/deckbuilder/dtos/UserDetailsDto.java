@@ -14,7 +14,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.mcawful.deckbuilder.daos.Login;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * Used with the Spring Security configuration to authorize and authenticate
@@ -24,6 +26,8 @@ import lombok.Getter;
  *
  */
 @Getter
+@ToString
+@EqualsAndHashCode
 public class UserDetailsDto implements UserDetails {
 
 	private static final long serialVersionUID = 6476506223560386489L;
@@ -41,6 +45,7 @@ public class UserDetailsDto implements UserDetails {
 	/**
 	 * The {@link String} password of a given user.
 	 */
+	@ToString.Exclude
 	private String password;
 
 	/**
